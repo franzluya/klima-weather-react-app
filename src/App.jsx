@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
-
+import Weather from "./components/Main";
 export default function App() {
 	const [location, setLocation] = useState("Manila");
 	const [coordinates, setCoordinates] = useState({ lat: null, lon: null });
 
-	const [data, setData] = useState(null);
+	const [data, setData] = useState({});
 	useEffect(() => {
 		if (!location) return;
 
@@ -35,8 +35,10 @@ export default function App() {
 				const openMeteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.lat}&longitude=${coordinates.lon}&hourly=temperature_2m`;
 				const response = await fetch(openMeteoUrl);
 				const data = await response.json();
-
-				setData(data);
+				if (Object.keys(data).length > 0) {
+					setData(data);
+				}
+				console.log(data)
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -47,6 +49,10 @@ export default function App() {
 	const handleSearch = (newLocation) => {
 		setLocation(newLocation);
 	};
-	console.log(data);
-	return <Header onSearch={handleSearch} />;
+	return (
+		<>
+			<Header onSearch={handleSearch} />
+			<Weather weatherData={data} location={location} />
+		</>
+	);
 }
