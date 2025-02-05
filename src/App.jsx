@@ -32,13 +32,13 @@ export default function App() {
 		if (!coordinates.lat || !coordinates.lon) return;
 		const fetchWeatherData = async () => {
 			try {
-				const openMeteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.lat}&longitude=${coordinates.lon}&hourly=temperature_2m`;
+				const openMeteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.lat}&longitude=${coordinates.lon}&current=temperature_2m,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,uv_index_max&timezone=auto`;
 				const response = await fetch(openMeteoUrl);
 				const data = await response.json();
 				if (Object.keys(data).length > 0) {
 					setData(data);
 				}
-				console.log(data)
+				console.log(data);
 			} catch (error) {
 				throw new Error(error);
 			}
