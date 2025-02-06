@@ -1,10 +1,12 @@
+import { FaCloud, FaLocationDot } from "react-icons/fa6";
+
 export default function Main({ weatherData, location }) {
 	// Safely extract data with defaults
 	const { current = {}, hourly = {} } = weatherData || {};
 	const { temperature_2m = [], time = [] } = hourly;
 	const currentWeather = { ...current };
 
-	// Function to format time strings nicely
+	// Function to format time strings
 	const formatTime = (isoString) => {
 		const date = new Date(isoString);
 		return new Intl.DateTimeFormat("en-US", {
@@ -40,27 +42,34 @@ export default function Main({ weatherData, location }) {
 		reorderedTime = [...time.slice(currentIndex + 1)];
 	}
 
+	const weatherBackgrounds = {
+
+	}
+
+
 	return (
-		<section className="mt-8">
-			<div className="flex flex-col justify-center items-center space-y-12 rounded-lg bg-blue-200 border border-gray-300 shadow max-w-3xl mx-auto p-8">
+		<section>
+			<div className="flex flex-col justify-center items-center space-y-12 rounded-lg h-screen max-w-3xl mx-auto p-8">
 				<div className="flex-none">
-					<div className="bg-blue-400 p-6 rounded-lg shadow-md">
+					<div className="bg-sky-500 p-6 rounded-lg shadow-md">
 						{hourlyData && (
-							<p className="text-sm mb-3 text-gray-800">{formatTime(currentWeather.time)}</p>
+							<p className="text-sm mb-3 text-gray-800">
+								{formatTime(currentWeather.time)}
+							</p>
 						)}
-						<h3 className="text-lg">{location}</h3>
-						<p className="text-5xl font-bold">
+						<h3  className="text-lg flex items-center text-gray-800">{location}<FaLocationDot /></h3>
+						<p className="text-5xl font-bold mb-2">
 							{currentWeather.temperature_2m &&
 								`${currentWeather.temperature_2m}°C`}
 						</p>
 						<p>
 							{currentWeather.relative_humidity_2m &&
-								`${currentWeather.relative_humidity_2m}% humidity`}
+								`Feels like ${currentWeather.relative_humidity_2m}°`}
 						</p>
 					</div>
 				</div>
 
-				<div className="w-full p-6 bg-blue-300 rounded-lg">
+				<div className="w-full p-6 bg-sky-300 rounded-lg">
 					<h3>Hourly Weather</h3>
 					<div className="flex space-x-4 overflow-auto">
 						{reorderedTemperatures.map((temp, index) => (
@@ -68,10 +77,10 @@ export default function Main({ weatherData, location }) {
 								key={index}
 								className="text-center shrink-0 px-3 py-6 hover:bg-blue-400 transition-all rounded-md"
 							>
+								<p className="font-semibold text-md">{temp}°C</p>
 								<span className="text-sm">
 									{formatTime(reorderedTime[index])}
 								</span>
-								<p>{temp}°C</p>
 							</div>
 						))}
 					</div>
