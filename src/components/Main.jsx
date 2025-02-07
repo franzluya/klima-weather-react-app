@@ -43,33 +43,55 @@ export default function Main({ weatherData, location }) {
 	}
 
 	const weatherBackgrounds = {
-
-	}
-
+		0: "/images/weather0.png",
+		1: "/images/cloudy.png",
+		2: "/images/cloudy.png",
+		3: "/images/cloud.png",
+		51: "/images/drizzle_rain.png",
+		53: "/images/cloudrain.png",
+		55: "/images/cloudrain.png",
+		61: "/images/drizzle_rain.png",
+		63: "/images/heavyrain.png",
+		65: "/images/heavyrain.png",
+		80: "/images/heavyrain.png",
+		81: "/images/heavyrain.png",
+		82: "/images/heavyrain.png",
+		85: "/images/cold.png",
+		86: "/images/cold.png",
+		95: "/images/storm.png",
+	};
 
 	return (
 		<section>
-			<div className="flex flex-col justify-center items-center space-y-12 rounded-lg h-screen max-w-3xl mx-auto p-8">
-				<div className="flex-none">
-					<div className="bg-sky-500 p-6 rounded-lg shadow-md">
+			<div className="flex flex-col items-center space-y-12 rounded-lg h-screen max-w-3xl mx-auto p-8">
+				<div className="flex items-center justify-between w-full">
+					<div className="p-6">
 						{hourlyData && (
-							<p className="text-sm mb-3 text-gray-800">
+							<p className="text-sm text-gray-600">
 								{formatTime(currentWeather.time)}
 							</p>
 						)}
-						<h3  className="text-lg flex items-center text-gray-800">{location}<FaLocationDot /></h3>
-						<p className="text-5xl font-bold mb-2">
+						<h3 className="text-lg flex items-center my-6 text-gray-800">
+							{location}
+							<FaLocationDot />
+						</h3>
+						<p className="text-4xl lg:text-5xl font-bold my-4">
 							{currentWeather.temperature_2m &&
 								`${currentWeather.temperature_2m}°C`}
 						</p>
-						<p>
-							{currentWeather.relative_humidity_2m &&
-								`Feels like ${currentWeather.relative_humidity_2m}°`}
+						<p className="text-sm">
+							{currentWeather.apparent_temperature &&
+								`Feels like ${currentWeather.apparent_temperature}°`}
 						</p>
 					</div>
+
+					<img
+						className="w-54 lg:w-80 drop-shadow-lg"
+						src={weatherBackgrounds[currentWeather.weather_code]}
+					></img>
 				</div>
 
-				<div className="w-full p-6 bg-sky-300 rounded-lg">
+				<div className="w-full p-6 bg-sky-300/50 rounded-lg">
 					<h3>Hourly Weather</h3>
 					<div className="flex space-x-4 overflow-auto">
 						{reorderedTemperatures.map((temp, index) => (
