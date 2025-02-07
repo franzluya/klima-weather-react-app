@@ -3,6 +3,10 @@ import {
 	FaClock,
 	FaLocationDot,
 	FaCalendarDays,
+	FaDroplet,
+	FaSun,
+	FaWind,
+	FaCloudArrowUp
 } from "react-icons/fa6";
 
 export default function Main({ weatherData, location }) {
@@ -78,11 +82,12 @@ export default function Main({ weatherData, location }) {
 	const dailyMinTemp = dailyWeather.temperature_2m_max ?? [];
 	const dailyMinTime = dailyWeather.time ?? [];
 	const dailyWeatherCode = dailyWeather.weather_code ?? [];
+	const dailyUV = dailyWeather.uv_index_max ?? [];
 
 	return (
 		<section>
-			<div className="flex flex-col items-center space-y-8 rounded-lg h-screen max-w-3xl mx-auto p-8">
-				<div className="flex items-center justify-between w-full">
+			<div className="flex flex-col items-center space-y-4 rounded-lg h-screen max-w-3xl mx-auto p-8">
+				<div className="flex items-center justify-between w-full mb-10">
 					<div className="p-6">
 						{hourlyData && (
 							<p className="text-sm text-gray-600">
@@ -107,6 +112,37 @@ export default function Main({ weatherData, location }) {
 						className="w-48 lg:w-80 drop-shadow-lg"
 						src={weatherBackgrounds[currentWeather.weather_code]}
 					></img>
+				</div>
+
+				<div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4">
+					<div className="bg-sky-300/50 rounded-lg p-4">
+						<div className="flex items-center space-x-1">
+							<FaDroplet />
+							<h2 className="text-sm text-gray-800 ">Humidity</h2>
+						</div>
+						<p className="font-semibold  text-center my-2">{currentWeather.relative_humidity_2m}%</p>
+					</div>
+					<div className="bg-sky-300/50 rounded-lg p-4">
+						<div className="flex items-center space-x-1">
+						<FaSun />
+							<h2 className="text-sm text-gray-800 ">UV Index</h2>
+						</div>
+						<p className="font-semibold text-center my-2">{dailyUV[0]}</p>
+					</div>
+					<div className="bg-sky-300/50 rounded-lg p-4">
+						<div className="flex items-center space-x-1">
+						<FaWind /> 
+							<h2 className="text-sm text-gray-800 ">Wind Speed</h2>
+						</div>
+						<p className="font-semibold text-center my-2">{currentWeather.wind_speed_10m} km/h</p>
+					</div>
+					<div className="bg-sky-300/50 rounded-lg p-4">
+						<div className="flex items-center space-x-1">
+						<FaCloudArrowUp />
+							<h2 className="text-sm text-gray-800 ">Pressure</h2>
+						</div>
+						<p className="font-semibold text-center my-2">{currentWeather.surface_pressure} hPa</p>
+					</div>
 				</div>
 
 				<div className="w-full p-6 bg-sky-300/50 rounded-lg">
