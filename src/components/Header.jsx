@@ -23,7 +23,7 @@ export default function Header({ onSearch }) {
 				<div className="relative">
 					<input
 						onChange={handleChange}
-						className="bg-sky-200 border-0 px-4 py-2 rounded-full min-w-20"
+						className="bg-sky-200/70 border-0 px-4 py-2 rounded-full min-w-20"
 						type="text"
 						name="location"
 						placeholder="Enter location"

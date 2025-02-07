@@ -1,4 +1,4 @@
-import { FaCloud, FaLocationDot } from "react-icons/fa6";
+import { FaCloud, FaClock, FaLocationDot } from "react-icons/fa6";
 
 export default function Main({ weatherData, location }) {
 	// Safely extract data with defaults
@@ -86,13 +86,16 @@ export default function Main({ weatherData, location }) {
 					</div>
 
 					<img
-						className="w-54 lg:w-80 drop-shadow-lg"
+						className="w-48 lg:w-80 drop-shadow-lg"
 						src={weatherBackgrounds[currentWeather.weather_code]}
 					></img>
 				</div>
 
 				<div className="w-full p-6 bg-sky-300/50 rounded-lg">
-					<h3>Hourly Weather</h3>
+					<div className="flex items-center space-x-1.5 text-gray-800">
+						<FaClock />
+						<h3>Hourly Weather</h3>
+					</div>
 					<div className="flex space-x-4 overflow-auto">
 						{reorderedTemperatures.map((temp, index) => (
 							<div
