@@ -23,13 +23,13 @@ export default function Header({ onSearch }) {
         <div className="relative">
           <input
             onChange={handleChange}
-            className="min-w-20 rounded-full border-0 bg-sky-200/70 px-4 py-2"
+            className="min-w-20 rounded-full border-0 bg-sky-600 opacity-70 px-4 py-2 text-white placeholder-gray-200"
             type="text"
             name="location"
             placeholder="Enter location"
           />
           <button className="absolute inset-y-0 right-5 cursor-pointer rounded-md">
-            <FaMagnifyingGlass className="text-gray-600" />
+            <FaMagnifyingGlass className="text-white" />
           </button>
         </div>
       </form>

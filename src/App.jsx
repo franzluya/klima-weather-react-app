@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
-import Weather from "./components/Main";
+import Main from "./components/Main";
 export default function App() {
 	const [location, setLocation] = useState("Manila");
 	const [coordinates, setCoordinates] = useState({ lat: null, lon: null });
-
+	const [isLoading, setIsLoading] = useState(false)
 	const [data, setData] = useState({});
 	useEffect(() => {
+		setIsLoading(true)
 		if (!location) return;
 
 		const fetchCoordinates = async () => {
@@ -41,6 +42,8 @@ export default function App() {
 				console.log(data);
 			} catch (error) {
 				throw new Error(error);
+			} finally {
+				setIsLoading(false)
 			}
 		};
 		fetchWeatherData();
@@ -52,7 +55,7 @@ export default function App() {
 	return (
 		<>
 			<Header onSearch={handleSearch} />
-			<Weather weatherData={data} location={location} />
+			<Main weatherData={data} location={location} loading={isLoading} />
 		</>
 	);
 }

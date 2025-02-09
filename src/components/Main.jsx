@@ -7,7 +7,7 @@ import {
 import WeatherStats from "./WeatherStats";
 import { formatTime, formatDate } from "/src/utils.js";
 
-export default function Main({ weatherData, location }) {
+export default function Main({ weatherData, location, loading }) {
   // Safely extract data with defaults
   const { current = {}, hourly = {}, daily = {} } = weatherData || {};
   const { temperature_2m = [], time = [] } = hourly;
@@ -67,82 +67,90 @@ export default function Main({ weatherData, location }) {
 
   return (
     <section>
-      <div className="mx-auto flex h-screen max-w-3xl flex-col items-center space-y-4 rounded-lg p-8 text-white">
-        <div className="mb-10 flex w-full items-center justify-between">
-          <div className="p-6">
-            {hourlyData && (
-              <p className="text-sm">{formatTime(currentWeather.time)}</p>
-            )}
-            <h3 className="my-6 flex items-center text-lg">
-              {location}
-              <FaLocationDot />
-            </h3>
-            <p className="my-4 text-4xl font-bold lg:text-5xl">
-              {currentWeather.temperature_2m &&
-                `${currentWeather.temperature_2m}°C`}
-            </p>
-            <p className="text-sm">
-              {currentWeather.apparent_temperature &&
-                `Feels like ${currentWeather.apparent_temperature}°`}
-            </p>
+      {loading ? (
+        <p className="text-center text-white text-lg mt-10">Loading...</p>
+      ) : (
+        <div className="mx-auto flex h-screen max-w-3xl flex-col items-center space-y-4 rounded-lg p-8 text-white">
+          <div className="mb-10 flex w-full items-center justify-between">
+            <div className="p-6">
+              {hourlyData && (
+                <p className="text-sm">{formatTime(currentWeather.time)}</p>
+              )}
+              {loading ? (
+                ""
+              ) : (
+                <h3 className="my-6 flex items-center text-lg">
+                  {location}
+                  <FaLocationDot />
+                </h3>
+              )}
+              <p className="my-4 text-4xl font-bold lg:text-5xl">
+                {currentWeather.temperature_2m &&
+                  `${currentWeather.temperature_2m}°C`}
+              </p>
+              <p className="text-sm">
+                {currentWeather.apparent_temperature &&
+                  `Feels like ${currentWeather.apparent_temperature}°`}
+              </p>
+            </div>
+
+            <img
+              className="w-48 drop-shadow-lg lg:w-80"
+              src={weatherBackgrounds[currentWeather.weather_code]}
+            ></img>
           </div>
 
-          <img
-            className="w-48 drop-shadow-lg lg:w-80"
-            src={weatherBackgrounds[currentWeather.weather_code]}
-          ></img>
-        </div>
+          <WeatherStats
+            currentWeather={currentWeather}
+            dailyWeather={dailyWeather}
+          />
 
-        <WeatherStats
-          currentWeather={currentWeather}
-          dailyWeather={dailyWeather}
-        />
-
-        <div className="bg-opacity-50 w-full rounded-lg bg-sky-700 p-4">
-          <div className="flex items-center space-x-1.5">
-            <FaClock />
-            <h3 className="text-sm">Hourly Weather</h3>
+          <div className="bg-opacity-50 w-full rounded-lg bg-sky-700 p-4">
+            <div className="flex items-center space-x-1.5">
+              <FaClock />
+              <h3 className="text-sm">Hourly Weather</h3>
+            </div>
+            <div className="flex space-x-4 overflow-auto">
+              {reorderedTemperatures.map((temp, index) => (
+                <div
+                  key={index}
+                  className="shrink-0 rounded-md px-3 py-6 text-center transition-all hover:bg-sky-400"
+                >
+                  <p className="text-sm font-semibold">{temp}°C</p>
+                  <span className="text-sm">
+                    {formatTime(reorderedTime[index])}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex space-x-4 overflow-auto">
-            {reorderedTemperatures.map((temp, index) => (
-              <div
-                key={index}
-                className="shrink-0 rounded-md px-3 py-6 text-center transition-all hover:bg-sky-400"
-              >
-                <p className="text-sm font-semibold">{temp}°C</p>
-                <span className="text-sm">
-                  {formatTime(reorderedTime[index])}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="bg-opacity-50 w-full rounded-lg bg-sky-700 p-4">
-          <div className="flex items-center space-x-1.5">
-            <FaCalendarDays />
-            <h3 className="text-sm">Daily Weather</h3>
-          </div>
-          <div className="flex space-x-4 overflow-auto">
-            {dailyMaxTemp.map((temp, index) => (
-              <div
-                key={index}
-                className="flex shrink-0 flex-col items-center space-y-1.5 rounded-md px-3 py-6 text-center transition-all hover:bg-sky-400"
-              >
-                <img
-                  className="w-8 drop-shadow-lg"
-                  src={weatherBackgrounds[dailyWeatherCode[index]]}
-                ></img>
-                <p className="text-sm font-semibold">
-                  {temp}°/ {dailyMinTemp[index]}°
-                </p>
-                <span className="text-sm">
-                  {formatDate(dailyMinTime[index])}
-                </span>
-              </div>
-            ))}
+          <div className="bg-opacity-50 w-full rounded-lg bg-sky-700 p-4">
+            <div className="flex items-center space-x-1.5">
+              <FaCalendarDays />
+              <h3 className="text-sm">Daily Weather</h3>
+            </div>
+            <div className="flex space-x-4 overflow-auto">
+              {dailyMaxTemp.map((temp, index) => (
+                <div
+                  key={index}
+                  className="flex shrink-0 flex-col items-center space-y-1.5 rounded-md px-3 py-6 text-center transition-all hover:bg-sky-400"
+                >
+                  <img
+                    className="w-8 drop-shadow-lg"
+                    src={weatherBackgrounds[dailyWeatherCode[index]]}
+                  ></img>
+                  <p className="text-sm font-semibold">
+                    {temp}°/ {dailyMinTemp[index]}°
+                  </p>
+                  <span className="text-sm">
+                    {formatDate(dailyMinTime[index])}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
