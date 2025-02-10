@@ -11,8 +11,8 @@ export default function Main({ weatherData, location, loading }) {
   // Safely extract data with defaults
   const { current = {}, hourly = {}, daily = {} } = weatherData || {};
   const { temperature_2m = [], time = [] } = hourly;
-  const currentWeather = { ...current };
-  const dailyWeather = { ...daily };
+  const currentWeather = current ? { ...current } : {};
+  const dailyWeather = daily ? { ...daily } : {};
 
   // Get the current index based on the current hour
   const currentHour = new Date().getHours();
@@ -65,10 +65,20 @@ export default function Main({ weatherData, location, loading }) {
   const dailyMinTime = dailyWeather.time ?? [];
   const dailyWeatherCode = dailyWeather.weather_code ?? [];
 
+
   return (
     <section>
       {loading ? (
-        <p className="text-center text-white text-lg mt-10">Loading...</p>
+        <div className="flex justify-center mt-10">
+          <div
+            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status"
+          >
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !border-0 !p-0 !whitespace-nowrap ![clip:rect(0,0,0,0)]">
+              Loading...
+            </span>
+          </div>
+        </div>
       ) : (
         <div className="mx-auto flex h-screen max-w-3xl flex-col items-center space-y-4 rounded-lg p-8 text-white">
           <div className="mb-10 flex w-full items-center justify-between">
@@ -110,7 +120,7 @@ export default function Main({ weatherData, location, loading }) {
               <FaClock />
               <h3 className="text-sm">Hourly Weather</h3>
             </div>
-            <div className="flex space-x-4 overflow-auto">
+            <div className="flex space-x-4 overflow-auto [&::-webkit-scrollbar]:hidden">
               {reorderedTemperatures.map((temp, index) => (
                 <div
                   key={index}
@@ -129,7 +139,7 @@ export default function Main({ weatherData, location, loading }) {
               <FaCalendarDays />
               <h3 className="text-sm">Daily Weather</h3>
             </div>
-            <div className="flex space-x-4 overflow-auto">
+            <div className="flex space-x-4 overflow-auto [&::-webkit-scrollbar]:hidden">
               {dailyMaxTemp.map((temp, index) => (
                 <div
                   key={index}

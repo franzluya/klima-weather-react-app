@@ -13,3 +13,23 @@ export const formatDate = (isoString) => {
     hour12: true,
   }).format(date);
 };
+
+// utils.js
+export const formatTimeOnly = (isoString) => {
+  if (!isoString) {
+    return "No time provided"; // Handle null or undefined input
+  }
+
+  const date = new Date(isoString);
+
+  if (isNaN(date.getTime())) {
+    // Check for truly invalid dates
+    return "Invalid Time"; // Handle cases where the date is truly invalid
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true, 
+  }).format(date);
+};
