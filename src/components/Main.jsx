@@ -67,9 +67,9 @@ export default function Main({ weatherData, location, loading }) {
 
 
   return (
-    <section>
+    <main>
       {loading ? (
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-10 h-screen">
           <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
             role="status"
@@ -80,7 +80,7 @@ export default function Main({ weatherData, location, loading }) {
           </div>
         </div>
       ) : (
-        <div className="mx-auto flex h-screen max-w-3xl flex-col items-center space-y-4 rounded-lg p-8 text-white">
+        <div className="mx-auto flex max-w-3xl flex-col items-center space-y-4 rounded-lg p-8 text-white">
           <div className="mb-10 flex w-full items-center justify-between">
             <div className="p-6">
               {hourlyData && (
@@ -161,6 +161,6 @@ export default function Main({ weatherData, location, loading }) {
           </div>
         </div>
       )}
-    </section>
+    </main>
   );
 }

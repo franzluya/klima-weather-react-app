@@ -8,8 +8,7 @@ const Stat = ({ name, icon, data, symbol, colspan }) => {
         <h2 className="text-sm">{name}</h2>
       </div>
       <p className="my-2 text-center font-semibold">
-        {data}
-        {symbol}
+        {data} {symbol}
       </p>
     </div>
   );
